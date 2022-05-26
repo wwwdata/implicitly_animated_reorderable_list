@@ -1,9 +1,9 @@
 import 'dart:ui';
 
+import 'package:animated_list_plus/animated_list_plus.dart';
+import 'package:animated_list_plus/transitions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
-import 'package:implicitly_animated_reorderable_list/transitions.dart';
 
 import '../util/util.dart';
 import 'ui.dart';
@@ -55,7 +55,6 @@ class _LanguagePageState extends State<LanguagePage>
     return Scaffold(
       appBar: AppBar(
         title: const Text('Examples'),
-        backgroundColor: theme.accentColor,
         actions: <Widget>[
           _buildPopupMenuButton(textTheme),
         ],
@@ -250,7 +249,7 @@ class _LanguagePageState extends State<LanguagePage>
               child: Text(
                 '${selectedLanguages.indexOf(lang) + 1}',
                 style: textTheme.bodyText2?.copyWith(
-                  color: theme.accentColor,
+                  color: theme.highlightColor,
                   fontSize: 16,
                 ),
               ),

@@ -1,6 +1,6 @@
-import 'package:implicitly_animated_reorderable_list/src/diff/myers_diff.dart';
-
 // ignore_for_file: avoid_print
+
+import 'package:animated_list_plus/animated_list_plus.dart';
 
 class Item {
   Item(this.id, this.value);

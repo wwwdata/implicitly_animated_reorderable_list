@@ -8,11 +8,11 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  animated_list_plus:
+    path: ../
   flutter:
     sdk: flutter
   flutter_slidable: ^0.6.0-nullsafety.0
-  implicitly_animated_reorderable_list:
-    path: ../../implicitly_animated_reorderable_list
 
 dev_dependencies:
   flutter_test:

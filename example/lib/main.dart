@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:example/ui/ui.dart';
+import './ui/lang_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -17,7 +16,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Implicitly Animated Reorderable List Example',
       theme: ThemeData.light().copyWith(
-        accentColor: Colors.amber.shade800,
         dividerTheme: DividerThemeData(
           thickness: 1,
           color: Colors.grey.shade300,

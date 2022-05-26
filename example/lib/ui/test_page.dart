@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:animated_list_plus/animated_list_plus.dart';
+import 'package:animated_list_plus/transitions.dart';
 import 'package:flutter/material.dart';
-
-import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
-import 'package:implicitly_animated_reorderable_list/transitions.dart';
 
 class TestPage extends StatefulWidget {
   const TestPage();
@@ -15,6 +14,7 @@ class TestPage extends StatefulWidget {
 
 class TestPageState extends State<TestPage> {
   static const maxLength = 1000;
+  final _controller = ScrollController();
 
   List<Test> nestedList = List.generate(maxLength, (i) => Test(i));
   Timer? _timer;
@@ -26,9 +26,16 @@ class TestPageState extends State<TestPage> {
     // crazyListOperationMadness();
   }
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   void crazyListOperationMadness() {
     void assignNewList() {
-      nestedList = List.generate(Random().nextInt(maxLength), (i) => Test(i))..shuffle();
+      nestedList = List.generate(Random().nextInt(maxLength), (i) => Test(i))
+        ..shuffle();
 
       setState(() {});
     }
@@ -53,7 +60,9 @@ class TestPageState extends State<TestPage> {
     return Scaffold(
       appBar: AppBar(backgroundColor: Colors.amber),
       body: Scrollbar(
+        controller: _controller,
         child: ImplicitlyAnimatedReorderableList<Test>(
+          controller: _controller,
           padding: const EdgeInsets.all(24),
           items: nestedList,
           areItemsTheSame: (oldItem, newItem) => oldItem == newItem,
