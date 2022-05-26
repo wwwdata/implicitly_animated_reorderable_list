@@ -1,7 +1,6 @@
-# Implicitly Animated Reorderable List
+# Animated List Plus
 
-[![pub package](https://img.shields.io/pub/v/implicitly_animated_reorderable_list.svg)](https://pub.dartlang.org/packages/implicitly_animated_reorderable_list)
-[![GitHub Stars](https://img.shields.io/github/stars/bxqm/implicitly_animated_reorderable_list.svg?logo=github)](https://github.com/bxqm/implicitly_animated_reorderable_list)
+Resurrection of the discontinued `implicitly_animated_reorderable_list` Plugin.
 
 A Flutter `ListView` that implicitly calculates the changes between two lists using the `MyersDiff` algorithm and animates between them for you. The `ImplicitlyAnimatedReorderableList` adds reordering support to its items with fully custom animations.
 
@@ -14,14 +13,18 @@ Click [here](https://github.com/bxqm/implicitly_animated_reorderable_list/blob/m
 ## Installing
 
 Add it to your `pubspec.yaml` file:
+
 ```yaml
 dependencies:
   implicitly_animated_reorderable_list: ^0.4.2
 ```
+
 Install packages from the command line
+
 ```
 flutter packages get
 ```
+
 If you like this package, consider supporting it by giving it a star on [GitHub](https://github.com/bxqm/implicitly_animated_reorderable_list) and a like on [pub.dev](https://pub.dev/packages/implicitly_animated_reorderable_list) :heart:
 
 ## Usage
@@ -30,7 +33,7 @@ The package contains two `ListViews`: `ImplicitlyAnimatedList` which is the base
 
 ### ImplicitlyAnimatedList
 
-`ImplicitlyAnimatedList` is based on `AnimatedList` and uses the `MyersDiff` algorithm to calculate the difference between two lists and calls `insertItem` and `removeItem` on the `AnimatedListState` for you. 
+`ImplicitlyAnimatedList` is based on `AnimatedList` and uses the `MyersDiff` algorithm to calculate the difference between two lists and calls `insertItem` and `removeItem` on the `AnimatedListState` for you.
 
 #### Example
 
@@ -52,10 +55,10 @@ ImplicitlyAnimatedList<MyGenericType>(
       curve: Curves.easeInOut,
       animation: animation,
       child: Text(item.name),
-    ); 
+    );
   },
   // An optional builder when an item was removed from the list.
-  // If not specified, the List uses the itemBuilder with 
+  // If not specified, the List uses the itemBuilder with
   // the animation reversed.
   removeItemBuilder: (context, animation, oldItem) {
     return FadeTransition(
@@ -146,6 +149,7 @@ ImplicitlyAnimatedReorderableList<MyGenericType>(
   shrinkWrap: true,
 );
 ```
+
 > For a more in depth example click [here](https://github.com/bxqm/implicitly_animated_reorderable_list/blob/master/example/lib/ui/lang_page.dart).
 
 ### Transitions
@@ -160,14 +164,10 @@ If you want to contribute your own custom transitions, feel free to make a pull 
 
 ### Caveats
 
-Note that this package is still in its very early phase and not enough testing has been done to guarantee stability.  
+Note that this package is still in its very early phase and not enough testing has been done to guarantee stability.
 
 Also note that computing the diff between two very large lists may take a significant amount of time (the computation is done on a background isolate though unless `spawnIsolate` is set to `false`).
 
 ### Acknowledgements
 
 The diff algorithm that `ImplicitlyAnimatedList` uses was written by [Dawid Bota](https://gitlab.com/otsoaUnLoco) at [GitLab](https://gitlab.com/otsoaUnLoco/animated-stream-list).
-
-### Roadmap
-
-You can take a look at the [Roadmap](https://github.com/bxqm/implicitly_animated_reorderable_list/blob/master/roadmap.md) to see which featues I am working on or plan to implement in future versions.
