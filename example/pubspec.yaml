@@ -1,0 +1,22 @@
+name: example
+description: Example for how to use an ImplicitlyAnimatedReorderableList
+publish_to: none
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_slidable: ^0.6.0-nullsafety.0
+  implicitly_animated_reorderable_list:
+    path: ../../implicitly_animated_reorderable_list
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
