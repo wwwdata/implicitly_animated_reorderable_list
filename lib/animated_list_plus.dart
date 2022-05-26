@@ -1,4 +1,4 @@
-library implicitly_animated_reorderable_list;
+library animated_list_plus;
 
 export 'src/diff/myers_diff.dart';
 export 'src/handle.dart';
