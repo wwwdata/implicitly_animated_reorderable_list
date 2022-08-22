@@ -5,10 +5,10 @@ Resurrection of the discontinued `implicitly_animated_reorderable_list` Plugin.
 A Flutter `ListView` that implicitly calculates the changes between two lists using the `MyersDiff` algorithm and animates between them for you. The `ImplicitlyAnimatedReorderableList` adds reordering support to its items with fully custom animations.
 
 <p style="text-align:center">
-    <img width="356px" alt="Demo" src="https://raw.githubusercontent.com/bxqm/implicitly_animated_reorderable_list/master/assets/demo.gif"/>
+    <img width="356px" alt="Demo" src="https://raw.githubusercontent.com/wwwdata/implicitly_animated_reorderable_list/master/assets/demo.gif"/>
 </p>
 
-Click [here](https://github.com/bxqm/implicitly_animated_reorderable_list/blob/master/example/lib/ui/) to view the full example.
+Click [here](https://github.com/wwwdata/implicitly_animated_reorderable_list/blob/master/example/lib/ui/) to view the full example.
 
 ## Installing
 
@@ -16,7 +16,7 @@ Add it to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  implicitly_animated_reorderable_list: ^0.4.2
+  animated_list_plus: ^0.4.3
 ```
 
 Install packages from the command line
@@ -25,7 +25,7 @@ Install packages from the command line
 flutter packages get
 ```
 
-If you like this package, consider supporting it by giving it a star on [GitHub](https://github.com/bxqm/implicitly_animated_reorderable_list) and a like on [pub.dev](https://pub.dev/packages/implicitly_animated_reorderable_list) :heart:
+If you like this package, consider supporting it by giving it a star on [GitHub](https://github.com/wwwdata/implicitly_animated_reorderable_list) and a like on [pub.dev](https://pub.dev/packages/implicitly_animated_reorderable_list) :heart:
 
 ## Usage
 
@@ -150,7 +150,7 @@ ImplicitlyAnimatedReorderableList<MyGenericType>(
 );
 ```
 
-> For a more in depth example click [here](https://github.com/bxqm/implicitly_animated_reorderable_list/blob/master/example/lib/ui/lang_page.dart).
+> For a more in depth example click [here](https://github.com/wwwdata/implicitly_animated_reorderable_list/blob/master/example/lib/ui/lang_page.dart).
 
 ### Transitions
 
