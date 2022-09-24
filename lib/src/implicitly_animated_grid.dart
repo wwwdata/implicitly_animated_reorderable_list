@@ -1,7 +1,9 @@
-import 'package:animated_list_plus/src/custom_sliver_animated_grid.dart';
+import 'package:animated_list_plus/src/util/util.dart';
 import 'package:flutter/material.dart';
 
-import 'src.dart';
+import 'custom_sliver_animated_grid.dart';
+import 'diff/diff.dart';
+import 'implicitly_animated_grid_base.dart';
 
 /// A Flutter ListView that implicitly animates between the changes of two lists.
 class ImplicitlyAnimatedGrid<E extends Object> extends StatelessWidget {
@@ -182,7 +184,7 @@ class ImplicitlyAnimatedGrid<E extends Object> extends StatelessWidget {
 
 /// A Flutter Sliver that implicitly animates between the changes of two lists.
 class SliverImplicitlyAnimatedGrid<E extends Object>
-    extends ImplicitlyAnimatedListBase<Widget, E> {
+    extends ImplicitlyAnimatedGridBase<Widget, E> {
   /// Creates a Flutter Sliver that implicitly animates between the changes of two lists.
   ///
   /// {@template implicitly_animated_reorderable_list.constructor}
@@ -239,12 +241,12 @@ class SliverImplicitlyAnimatedGrid<E extends Object>
         );
 
   @override
-  _SliverImplicitlyAnimatedListState<E> createState() =>
-      _SliverImplicitlyAnimatedListState<E>();
+  _SliverImplicitlyAnimatedGridState<E> createState() =>
+      _SliverImplicitlyAnimatedGridState<E>();
 }
 
-class _SliverImplicitlyAnimatedListState<E extends Object>
-    extends ImplicitlyAnimatedListBaseState<Widget,
+class _SliverImplicitlyAnimatedGridState<E extends Object>
+    extends ImplicitlyAnimatedGridBaseState<Widget,
         SliverImplicitlyAnimatedGrid<E>, E> {
   @override
   Widget build(BuildContext context) {
