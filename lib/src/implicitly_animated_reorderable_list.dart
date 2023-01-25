@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:animated_list_plus/src/custom_sliver_animated_list.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide AnimatedItemBuilder;
 
 import 'src.dart';
 

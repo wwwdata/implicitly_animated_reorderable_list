@@ -4,7 +4,7 @@ import 'package:animated_list_plus/src/custom_sliver_animated_list.dart';
 import 'package:async/async.dart';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide AnimatedItemBuilder;
 
 import 'src.dart';
 

@@ -1,3 +1,7 @@
+## 0.4.5
+
+- Fix compatibility with new Flutter 3.7.0. They now also have an `AnimatedItemBuilder` type.
+
 ## 0.4.4
 
 - Fix README
