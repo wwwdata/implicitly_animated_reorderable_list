@@ -46,7 +46,7 @@ class Reorderable extends StatefulWidget {
   @override
   ReorderableState createState() => ReorderableState();
 
-  static ReorderableState? of(BuildContext context) {
+  static ReorderableState? maybeOf(BuildContext context) {
     return context.findAncestorStateOfType<ReorderableState>();
   }
 }
@@ -96,7 +96,7 @@ class ReorderableState extends State<Reorderable>
   }
 
   void _registerItem() {
-    final list = ImplicitlyAnimatedReorderableList.of(context)!;
+    final list = ImplicitlyAnimatedReorderableList.maybeOf(context)!;
 
     list.registerItem(this);
     _dragController.duration = list.widget.settleDuration;
