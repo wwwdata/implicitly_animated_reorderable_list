@@ -8,9 +8,13 @@ on:
 
 jobs:
   build:
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [3.7.0, 3.7.3]
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
     with:
       flutter_channel: "stable"
-      flutter_version: "3.7.0"
+      flutter_version: ${{ matrix.version }}
       test_recursion: true
       min_coverage: 0
