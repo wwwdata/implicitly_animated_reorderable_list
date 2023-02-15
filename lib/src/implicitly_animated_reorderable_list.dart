@@ -195,7 +195,7 @@ class ImplicitlyAnimatedReorderableList<E extends Object>
   ImplicitlyAnimatedReorderableListState<E> createState() =>
       ImplicitlyAnimatedReorderableListState<E>();
 
-  static ImplicitlyAnimatedReorderableListState? of(BuildContext context) {
+  static ImplicitlyAnimatedReorderableListState? maybeOf(BuildContext context) {
     return context
         .findAncestorStateOfType<ImplicitlyAnimatedReorderableListState>();
   }
