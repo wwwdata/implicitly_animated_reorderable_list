@@ -1,3 +1,8 @@
+## 0.5.0
+
+- Minim supported Flutter version is 3.7.0
+- Use `.maybeOf` because `.of` is throwing a Exception in 3.7.0
+
 ## 0.4.5
 
 - Fix compatibility with new Flutter 3.7.0. They now also have an `AnimatedItemBuilder` type.
