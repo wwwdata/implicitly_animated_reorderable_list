@@ -203,7 +203,9 @@ class _LanguagePageState extends State<LanguagePage>
         motion: const ScrollMotion(),
 
         // A pane can dismiss the Slidable.
-        dismissible: DismissiblePane(onDismissed: () {}),
+        dismissible: DismissiblePane(onDismissed: () {
+          setState(() => selectedLanguages.remove(lang));
+        }),
 
         // All actions are defined in the children parameter.
         children: [
