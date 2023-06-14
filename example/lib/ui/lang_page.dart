@@ -193,78 +193,72 @@ class _LanguagePageState extends State<LanguagePage>
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
-    final List<Widget> actions = [
-      SlideAction(
-        closeOnTap: true,
-        color: Colors.redAccent,
-        onTap: () => setState(() => selectedLanguages.remove(lang)),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const Icon(
-                Icons.delete,
-                color: Colors.white,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Delete',
-                style: textTheme.bodyText2?.copyWith(
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ];
-
     return Slidable(
-      actionPane: const SlidableBehindActionPane(),
-      actions: actions,
-      secondaryActions: actions,
-      child: Container(
-        alignment: Alignment.center,
-        // For testing different size item. You can comment this line
-        padding: lang.englishName == 'English'
-            ? const EdgeInsets.symmetric(vertical: 16.0)
-            : EdgeInsets.zero,
-        child: ListTile(
-          title: Text(
-            lang.nativeName,
-            style: textTheme.bodyText2?.copyWith(
-              fontSize: 16,
-            ),
+      // Specify a key if the Slidable is dismissible.
+      key: ValueKey(lang.nativeName),
+
+      // The start action pane is the one at the left or the top side.
+      startActionPane: ActionPane(
+        // A motion is a widget used to control how the pane animates.
+        motion: const ScrollMotion(),
+
+        // A pane can dismiss the Slidable.
+        dismissible: DismissiblePane(onDismissed: () {}),
+
+        // All actions are defined in the children parameter.
+        children: [
+          // A SlidableAction can have an icon and/or a label.
+          SlidableAction(
+            onPressed: (context) {
+              setState(() => selectedLanguages.remove(lang));
+            },
+            backgroundColor: Color(0xFFFE4A49),
+            foregroundColor: Colors.white,
+            icon: Icons.delete,
+            label: 'Delete',
           ),
-          subtitle: Text(
-            lang.englishName,
-            style: textTheme.bodyText1?.copyWith(
-              fontSize: 15,
-            ),
+          SlidableAction(
+            onPressed: (context) {
+              setState(() => selectedLanguages.remove(lang));
+            },
+            backgroundColor: Color(0xFF21B7CA),
+            foregroundColor: Colors.white,
+            icon: Icons.share,
+            label: 'Share',
           ),
-          leading: SizedBox(
-            width: 36,
-            height: 36,
-            child: Center(
-              child: Text(
-                '${selectedLanguages.indexOf(lang) + 1}',
-                style: textTheme.bodyText2?.copyWith(
-                  color: theme.highlightColor,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-          ),
-          trailing: const Handle(
-            delay: Duration(milliseconds: 0),
-            capturePointer: true,
-            child: Icon(
-              Icons.drag_handle,
-              color: Colors.grey,
-            ),
-          ),
-        ),
+        ],
       ),
+
+      // The end action pane is the one at the right or the bottom side.
+      endActionPane: ActionPane(
+        motion: ScrollMotion(),
+        children: [
+          SlidableAction(
+            // An action can be bigger than the others.
+            flex: 2,
+            onPressed: (context) {
+              setState(() => selectedLanguages.remove(lang));
+            },
+            backgroundColor: Color(0xFF7BC043),
+            foregroundColor: Colors.white,
+            icon: Icons.archive,
+            label: 'Archive',
+          ),
+          SlidableAction(
+            onPressed: (context) {
+              setState(() => selectedLanguages.remove(lang));
+            },
+            backgroundColor: Color(0xFF0392CF),
+            foregroundColor: Colors.white,
+            icon: Icons.save,
+            label: 'Save',
+          ),
+        ],
+      ),
+
+      // The child of the Slidable is what the user sees when the
+      // component is not dragged.
+      child: ListTile(title: Text(lang.nativeName)),
     );
   }
 
