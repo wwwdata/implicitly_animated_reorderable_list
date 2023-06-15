@@ -52,6 +52,8 @@ class _LanguagePageState extends State<LanguagePage>
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
+    print(selectedLanguages.toString());
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Examples'),
@@ -116,6 +118,7 @@ class _LanguagePageState extends State<LanguagePage>
       items: selectedLanguages,
       shrinkWrap: true,
       reorderDuration: const Duration(milliseconds: 200),
+      removeDuration: Duration.zero,
       liftDuration: const Duration(milliseconds: 300),
       physics: const NeverScrollableScrollPhysics(),
       padding: EdgeInsets.zero,
@@ -134,6 +137,14 @@ class _LanguagePageState extends State<LanguagePage>
             child: tile,
           );
         });
+      },
+      removeItemBuilder: (context, animation, nearbyUser) {
+        return Reorderable(
+            key: UniqueKey(),
+            child: SizedBox(
+              width: 0,
+              height: 0,
+            ));
       },
       updateItemBuilder: (context, itemAnimation, lang) {
         return buildReorderable(lang, (tile) {
@@ -195,7 +206,7 @@ class _LanguagePageState extends State<LanguagePage>
 
     return Slidable(
       // Specify a key if the Slidable is dismissible.
-      key: ValueKey(lang.nativeName),
+      key: UniqueKey(),
 
       // The start action pane is the one at the left or the top side.
       startActionPane: ActionPane(

@@ -8,12 +8,14 @@
 .buildlog/
 .history
 .svn/
+.idea/
 
 # IntelliJ related
 *.iml
 *.ipr
 *.iws
 .idea/*
+example/.idea/*
 
 # Lock files
 pubspec.lock
