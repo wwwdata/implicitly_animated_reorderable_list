@@ -1,4 +1,5 @@
 import 'package:animated_list_plus/src/custom_sliver_animated_list.dart';
+import 'package:animated_list_plus/src/util/sliver_child_separated_builder_delegate.dart';
 import 'package:flutter/material.dart' hide AnimatedItemBuilder;
 
 import 'src.dart';
@@ -12,6 +13,10 @@ class ImplicitlyAnimatedList<E extends Object> extends StatelessWidget {
   ///
   /// List items are only built when they're scrolled into view.
   final AnimatedItemBuilder<Widget, E> itemBuilder;
+
+  /// Called to build widgets that get placed between
+  /// itemBuilder(context, index) and itemBuilder(context, index + 1).
+  final NullableIndexedWidgetBuilder? separatorBuilder;
 
   /// An optional builder when an item was removed from the list.
   ///
@@ -126,6 +131,7 @@ class ImplicitlyAnimatedList<E extends Object> extends StatelessWidget {
     required this.items,
     required this.itemBuilder,
     required this.areItemsTheSame,
+    this.separatorBuilder,
     this.removeItemBuilder,
     this.updateItemBuilder,
     this.insertDuration = const Duration(milliseconds: 500),
@@ -143,6 +149,8 @@ class ImplicitlyAnimatedList<E extends Object> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final separatorBuilder = this.separatorBuilder;
+
     return CustomScrollView(
       scrollDirection: scrollDirection,
       reverse: reverse,
@@ -153,17 +161,30 @@ class ImplicitlyAnimatedList<E extends Object> extends StatelessWidget {
       slivers: <Widget>[
         SliverPadding(
           padding: padding ?? const EdgeInsets.all(0),
-          sliver: SliverImplicitlyAnimatedList<E>(
-            items: items,
-            itemBuilder: itemBuilder,
-            areItemsTheSame: areItemsTheSame,
-            updateItemBuilder: updateItemBuilder,
-            removeItemBuilder: removeItemBuilder,
-            insertDuration: insertDuration,
-            removeDuration: removeDuration,
-            updateDuration: updateDuration,
-            spawnIsolate: spawnIsolate,
-          ),
+          sliver: separatorBuilder == null
+              ? SliverImplicitlyAnimatedList<E>(
+                  items: items,
+                  itemBuilder: itemBuilder,
+                  areItemsTheSame: areItemsTheSame,
+                  updateItemBuilder: updateItemBuilder,
+                  removeItemBuilder: removeItemBuilder,
+                  insertDuration: insertDuration,
+                  removeDuration: removeDuration,
+                  updateDuration: updateDuration,
+                  spawnIsolate: spawnIsolate,
+                )
+              : SliverImplicitlyAnimatedList<E>.separated(
+                  items: items,
+                  itemBuilder: itemBuilder,
+                  separatorBuilder: separatorBuilder,
+                  areItemsTheSame: areItemsTheSame,
+                  updateItemBuilder: updateItemBuilder,
+                  removeItemBuilder: removeItemBuilder,
+                  insertDuration: insertDuration,
+                  removeDuration: removeDuration,
+                  updateDuration: updateDuration,
+                  spawnIsolate: spawnIsolate,
+                ),
         ),
       ],
     );
@@ -210,6 +231,63 @@ class SliverImplicitlyAnimatedList<E extends Object>
           key: key,
           items: items,
           itemBuilder: itemBuilder,
+          delegateBuilder: null,
+          areItemsTheSame: areItemsTheSame,
+          removeItemBuilder: removeItemBuilder,
+          updateItemBuilder: updateItemBuilder,
+          insertDuration: insertDuration,
+          removeDuration: removeDuration,
+          updateDuration: updateDuration,
+          spawnIsolate: spawnIsolate,
+        );
+
+  /// Creates a Flutter Sliver that implicitly animates between the changes of two lists.
+  ///
+  /// {@template implicitly_animated_reorderable_list.constructor}
+  /// The [items] parameter represents the current items that should be displayed in
+  /// the list.
+  ///
+  /// The [itemBuilder] callback is used to build each child as needed. The parent must
+  /// be a [Reorderable] widget.
+  ///
+  /// The [separatorBuilder] is the widget that gets placed between
+  /// itemBuilder(context, index) and itemBuilder(context, index + 1).
+  ///
+  /// The [areItemsTheSame] callback is called by the DiffUtil to decide whether two objects
+  /// represent the same item. For example, if your items have unique ids, this method should
+  /// check their id equality.
+  ///
+  /// The [onReorderFinished] callback is called in response to when the dragged item has
+  /// been released and animated to its final destination. Here you should update
+  /// the underlying data in your model/bloc/database etc.
+  ///
+  /// The [spawnIsolate] flag indicates whether to spawn a new isolate on which to
+  /// calculate the diff between the lists. Usually you wont have to specify this
+  /// value as the MyersDiff implementation will use its own metrics to decide, whether
+  /// a new isolate has to be spawned or not for optimal performance.
+  /// {@endtemplate}
+  SliverImplicitlyAnimatedList.separated({
+    Key? key,
+    required List<E> items,
+    required AnimatedItemBuilder<Widget, E> itemBuilder,
+    required ItemDiffUtil<E> areItemsTheSame,
+    required NullableIndexedWidgetBuilder separatorBuilder,
+    RemovedItemBuilder<Widget, E>? removeItemBuilder,
+    UpdatedItemBuilder<Widget, E>? updateItemBuilder,
+    Duration insertDuration = const Duration(milliseconds: 500),
+    Duration removeDuration = const Duration(milliseconds: 500),
+    Duration updateDuration = const Duration(milliseconds: 500),
+    bool? spawnIsolate,
+  }) : super(
+          key: key,
+          items: items,
+          itemBuilder: itemBuilder,
+          delegateBuilder: (builder, itemCount) =>
+              SliverChildSeparatedBuilderDelegate(
+            itemBuilder: builder,
+            separatorBuilder: separatorBuilder,
+            itemCount: itemCount,
+          ),
           areItemsTheSame: areItemsTheSame,
           removeItemBuilder: removeItemBuilder,
           updateItemBuilder: updateItemBuilder,
@@ -246,6 +324,7 @@ class _SliverImplicitlyAnimatedListState<E extends Object>
           return itemBuilder(context, animation, item, index);
         }
       },
+      delegateBuilder: widget.delegateBuilder,
     );
   }
 }

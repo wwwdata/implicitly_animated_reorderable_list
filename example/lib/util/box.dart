@@ -86,7 +86,8 @@ class Box extends StatelessWidget {
       child: child,
     );
 
-    if (boxShape == BoxShape.circle || (customBorders != null || borderRadius > 0.0)) {
+    if (boxShape == BoxShape.circle ||
+        (customBorders != null || borderRadius > 0.0)) {
       content = ClipRRect(
         borderRadius: br,
         child: content,
@@ -97,14 +98,17 @@ class Box extends StatelessWidget {
       content = Material(
         color: Colors.transparent,
         type: MaterialType.transparency,
-        shape: circle ? const CircleBorder() : RoundedRectangleBorder(borderRadius: br),
+        shape: circle
+            ? const CircleBorder()
+            : RoundedRectangleBorder(borderRadius: br),
         child: InkWell(
           splashColor: splashColor ?? theme.splashColor,
           highlightColor: theme.highlightColor,
           hoverColor: theme.hoverColor,
           focusColor: theme.focusColor,
-          customBorder:
-              circle ? const CircleBorder() : RoundedRectangleBorder(borderRadius: br),
+          customBorder: circle
+              ? const CircleBorder()
+              : RoundedRectangleBorder(borderRadius: br),
           onTap: onTap,
           onLongPress: onLongPress,
           onDoubleTap: onDoubleTap,
