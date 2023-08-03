@@ -1,3 +1,7 @@
+## 0.5.1
+
+- Add support for separator builder. You can now use `SliverImplicitlyAnimatedList.separated` or `ImplicitlyAnimatedReorderableList.separated`.
+
 ## 0.5.0
 
 - Minim supported Flutter version is 3.7.0
