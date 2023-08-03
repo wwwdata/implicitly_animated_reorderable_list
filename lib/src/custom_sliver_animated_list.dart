@@ -3,12 +3,18 @@ import 'package:flutter/material.dart';
 
 const Duration _kDuration = Duration(milliseconds: 300);
 
+typedef DelegateBuilder = SliverChildBuilderDelegate Function(
+  NullableIndexedWidgetBuilder builder, {
+  int itemCount,
+});
+
 class CustomSliverAnimatedList extends StatefulWidget {
   /// Creates a sliver that animates items when they are inserted or removed.
   const CustomSliverAnimatedList({
     Key? key,
     required this.itemBuilder,
     this.initialItemCount = 0,
+    this.delegateBuilder,
   })  : assert(initialItemCount >= 0),
         super(key: key);
 
@@ -29,6 +35,8 @@ class CustomSliverAnimatedList extends StatefulWidget {
 
   /// {@macro flutter.widgets.animatedList.initialItemCount}
   final int initialItemCount;
+
+  final DelegateBuilder? delegateBuilder;
 
   @override
   CustomSliverAnimatedListState createState() =>
@@ -149,7 +157,8 @@ class CustomSliverAnimatedListState extends State<CustomSliverAnimatedList>
   }
 
   SliverChildDelegate _createDelegate() {
-    return SliverChildBuilderDelegate(_itemBuilder, childCount: _itemsCount);
+    return widget.delegateBuilder?.call(_itemBuilder, itemCount: _itemsCount) ??
+        SliverChildBuilderDelegate(_itemBuilder, childCount: _itemsCount);
   }
 
   /// Insert an item at [index] and start an animation that will be passed to
