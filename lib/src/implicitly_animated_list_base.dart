@@ -24,6 +24,10 @@ abstract class ImplicitlyAnimatedListBase<W extends Widget, E extends Object>
   /// List items are only built when they're scrolled into view.
   final AnimatedItemBuilder<W, E> itemBuilder;
 
+  /// Called to build widgets that get placed between
+  /// itemBuilder(context, index) and itemBuilder(context, index + 1).
+  final DelegateBuilder? delegateBuilder;
+
   /// An optional builder when an item was removed from the list.
   ///
   /// If not specified, the [ImplicitlyAnimatedList] uses the [itemBuilder] with
@@ -67,6 +71,7 @@ abstract class ImplicitlyAnimatedListBase<W extends Widget, E extends Object>
     required this.items,
     required this.areItemsTheSame,
     required this.itemBuilder,
+    required this.delegateBuilder,
     required this.removeItemBuilder,
     required this.updateItemBuilder,
     required this.insertDuration,
