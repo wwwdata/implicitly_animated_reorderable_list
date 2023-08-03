@@ -64,13 +64,16 @@ class Language {
   });
 
   @override
-  String toString() => 'Language englishName: $englishName, nativeName: $nativeName';
+  String toString() =>
+      'Language englishName: $englishName, nativeName: $nativeName';
 
   @override
   bool operator ==(Object o) {
     if (identical(this, o)) return true;
 
-    return o is Language && o.englishName == englishName && o.nativeName == nativeName;
+    return o is Language &&
+        o.englishName == englishName &&
+        o.nativeName == nativeName;
   }
 
   @override
