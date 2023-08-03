@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:animated_list_plus/src/custom_sliver_animated_list.dart';
+import 'package:animated_list_plus/src/util/sliver_child_separated_builder_delegate.dart';
 import 'package:flutter/material.dart' hide AnimatedItemBuilder;
 
 import 'src.dart';
@@ -135,6 +136,10 @@ class ImplicitlyAnimatedReorderableList<E extends Object>
   /// The [itemBuilder] callback is used to build each child as needed. The parent must
   /// be a [Reorderable] widget.
   ///
+  /// The [separatorBuilder] is the widget that gets placed between
+  /// itemBuilder(context, index) and itemBuilder(context, index + 1).
+  ///
+  ///
   /// The [areItemsTheSame] callback is called by the DiffUtil to decide whether two objects
   /// represent the same item. For example, if your items have unique ids, this method should
   /// check their id equality.
@@ -147,11 +152,12 @@ class ImplicitlyAnimatedReorderableList<E extends Object>
   /// calculate the diff between the lists. Usually you wont have to specify this
   /// value as the MyersDiff implementation will use its own metrics to decide, whether
   /// a new isolate has to be spawned or not for optimal performance.
-  const ImplicitlyAnimatedReorderableList({
+  ImplicitlyAnimatedReorderableList({
     Key? key,
     required List<E> items,
     required AnimatedItemBuilder<Reorderable, E> itemBuilder,
     required ItemDiffUtil<E> areItemsTheSame,
+    NullableIndexedWidgetBuilder? separatorBuilder,
     RemovedItemBuilder<Reorderable, E>? removeItemBuilder,
     UpdatedItemBuilder<Reorderable, E>? updateItemBuilder,
     Duration insertDuration = const Duration(milliseconds: 500),
@@ -182,6 +188,13 @@ class ImplicitlyAnimatedReorderableList<E extends Object>
           key: key,
           items: items,
           itemBuilder: itemBuilder,
+          delegateBuilder: separatorBuilder == null
+              ? null
+              : ((builder, itemCount) => SliverChildSeparatedBuilderDelegate(
+                    itemBuilder: builder,
+                    separatorBuilder: separatorBuilder,
+                    itemCount: itemCount,
+                  )),
           areItemsTheSame: areItemsTheSame,
           removeItemBuilder: removeItemBuilder,
           updateItemBuilder: updateItemBuilder,
@@ -725,6 +738,7 @@ class ImplicitlyAnimatedReorderableListState<E extends Object>
                 return child;
               }
             },
+            delegateBuilder: widget.delegateBuilder,
           ),
         ),
         if (hasFooter)

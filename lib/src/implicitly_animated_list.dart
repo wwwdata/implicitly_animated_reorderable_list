@@ -1,4 +1,5 @@
 import 'package:animated_list_plus/src/custom_sliver_animated_list.dart';
+import 'package:animated_list_plus/src/util/sliver_child_separated_builder_delegate.dart';
 import 'package:flutter/material.dart' hide AnimatedItemBuilder;
 
 import 'src.dart';
@@ -12,6 +13,10 @@ class ImplicitlyAnimatedList<E extends Object> extends StatelessWidget {
   ///
   /// List items are only built when they're scrolled into view.
   final AnimatedItemBuilder<Widget, E> itemBuilder;
+
+  /// Called to build widgets that get placed between
+  /// itemBuilder(context, index) and itemBuilder(context, index + 1).
+  final NullableIndexedWidgetBuilder? separatorBuilder;
 
   /// An optional builder when an item was removed from the list.
   ///
@@ -126,6 +131,7 @@ class ImplicitlyAnimatedList<E extends Object> extends StatelessWidget {
     required this.items,
     required this.itemBuilder,
     required this.areItemsTheSame,
+    this.separatorBuilder,
     this.removeItemBuilder,
     this.updateItemBuilder,
     this.insertDuration = const Duration(milliseconds: 500),
@@ -156,6 +162,7 @@ class ImplicitlyAnimatedList<E extends Object> extends StatelessWidget {
           sliver: SliverImplicitlyAnimatedList<E>(
             items: items,
             itemBuilder: itemBuilder,
+            separatorBuilder: separatorBuilder,
             areItemsTheSame: areItemsTheSame,
             updateItemBuilder: updateItemBuilder,
             removeItemBuilder: removeItemBuilder,
@@ -182,6 +189,9 @@ class SliverImplicitlyAnimatedList<E extends Object>
   /// The [itemBuilder] callback is used to build each child as needed. The parent must
   /// be a [Reorderable] widget.
   ///
+  /// The [separatorBuilder] is the widget that gets placed between
+  /// itemBuilder(context, index) and itemBuilder(context, index + 1).
+  ///
   /// The [areItemsTheSame] callback is called by the DiffUtil to decide whether two objects
   /// represent the same item. For example, if your items have unique ids, this method should
   /// check their id equality.
@@ -195,11 +205,12 @@ class SliverImplicitlyAnimatedList<E extends Object>
   /// value as the MyersDiff implementation will use its own metrics to decide, whether
   /// a new isolate has to be spawned or not for optimal performance.
   /// {@endtemplate}
-  const SliverImplicitlyAnimatedList({
+  SliverImplicitlyAnimatedList({
     Key? key,
     required List<E> items,
     required AnimatedItemBuilder<Widget, E> itemBuilder,
     required ItemDiffUtil<E> areItemsTheSame,
+    NullableIndexedWidgetBuilder? separatorBuilder,
     RemovedItemBuilder<Widget, E>? removeItemBuilder,
     UpdatedItemBuilder<Widget, E>? updateItemBuilder,
     Duration insertDuration = const Duration(milliseconds: 500),
@@ -210,6 +221,13 @@ class SliverImplicitlyAnimatedList<E extends Object>
           key: key,
           items: items,
           itemBuilder: itemBuilder,
+          delegateBuilder: separatorBuilder == null
+              ? null
+              : ((builder, itemCount) => SliverChildSeparatedBuilderDelegate(
+                    itemBuilder: builder,
+                    separatorBuilder: separatorBuilder,
+                    itemCount: itemCount,
+                  )),
           areItemsTheSame: areItemsTheSame,
           removeItemBuilder: removeItemBuilder,
           updateItemBuilder: updateItemBuilder,
@@ -246,6 +264,7 @@ class _SliverImplicitlyAnimatedListState<E extends Object>
           return itemBuilder(context, animation, item, index);
         }
       },
+      delegateBuilder: widget.delegateBuilder,
     );
   }
 }
