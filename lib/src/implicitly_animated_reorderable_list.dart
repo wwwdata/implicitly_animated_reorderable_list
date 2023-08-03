@@ -136,10 +136,6 @@ class ImplicitlyAnimatedReorderableList<E extends Object>
   /// The [itemBuilder] callback is used to build each child as needed. The parent must
   /// be a [Reorderable] widget.
   ///
-  /// The [separatorBuilder] is the widget that gets placed between
-  /// itemBuilder(context, index) and itemBuilder(context, index + 1).
-  ///
-  ///
   /// The [areItemsTheSame] callback is called by the DiffUtil to decide whether two objects
   /// represent the same item. For example, if your items have unique ids, this method should
   /// check their id equality.
@@ -152,12 +148,11 @@ class ImplicitlyAnimatedReorderableList<E extends Object>
   /// calculate the diff between the lists. Usually you wont have to specify this
   /// value as the MyersDiff implementation will use its own metrics to decide, whether
   /// a new isolate has to be spawned or not for optimal performance.
-  ImplicitlyAnimatedReorderableList({
+  const ImplicitlyAnimatedReorderableList({
     Key? key,
     required List<E> items,
     required AnimatedItemBuilder<Reorderable, E> itemBuilder,
     required ItemDiffUtil<E> areItemsTheSame,
-    NullableIndexedWidgetBuilder? separatorBuilder,
     RemovedItemBuilder<Reorderable, E>? removeItemBuilder,
     UpdatedItemBuilder<Reorderable, E>? updateItemBuilder,
     Duration insertDuration = const Duration(milliseconds: 500),
@@ -188,13 +183,83 @@ class ImplicitlyAnimatedReorderableList<E extends Object>
           key: key,
           items: items,
           itemBuilder: itemBuilder,
-          delegateBuilder: separatorBuilder == null
-              ? null
-              : ((builder, itemCount) => SliverChildSeparatedBuilderDelegate(
-                    itemBuilder: builder,
-                    separatorBuilder: separatorBuilder,
-                    itemCount: itemCount,
-                  )),
+          delegateBuilder: null,
+          areItemsTheSame: areItemsTheSame,
+          removeItemBuilder: removeItemBuilder,
+          updateItemBuilder: updateItemBuilder,
+          insertDuration: insertDuration,
+          removeDuration: removeDuration,
+          updateDuration: updateDuration,
+          spawnIsolate: spawnIsolate,
+        );
+
+  /// Creates a Flutter ListView that implicitly animates between the changes of two lists with
+  /// the support to reorder its items.
+  ///
+  /// The [items] parameter represents the current items that should be displayed in
+  /// the list.
+  ///
+  /// The [itemBuilder] callback is used to build each child as needed. The parent must
+  /// be a [Reorderable] widget.
+  ///
+  /// The [separatorBuilder] is the widget that gets placed between
+  /// itemBuilder(context, index) and itemBuilder(context, index + 1).
+  ///
+  ///
+  /// The [areItemsTheSame] callback is called by the DiffUtil to decide whether two objects
+  /// represent the same item. For example, if your items have unique ids, this method should
+  /// check their id equality.
+  ///
+  /// The [onReorderFinished] callback is called in response to when the dragged item has
+  /// been released and animated to its final destination. Here you should update
+  /// the underlying data in your model/bloc/database etc.
+  ///
+  /// The [spawnIsolate] flag indicates whether to spawn a new isolate on which to
+  /// calculate the diff between the lists. Usually you wont have to specify this
+  /// value as the MyersDiff implementation will use its own metrics to decide, whether
+  /// a new isolate has to be spawned or not for optimal performance.
+  ImplicitlyAnimatedReorderableList.separated({
+    Key? key,
+    required List<E> items,
+    required AnimatedItemBuilder<Reorderable, E> itemBuilder,
+    required ItemDiffUtil<E> areItemsTheSame,
+    required NullableIndexedWidgetBuilder separatorBuilder,
+    RemovedItemBuilder<Reorderable, E>? removeItemBuilder,
+    UpdatedItemBuilder<Reorderable, E>? updateItemBuilder,
+    Duration insertDuration = const Duration(milliseconds: 500),
+    Duration removeDuration = const Duration(milliseconds: 500),
+    Duration updateDuration = const Duration(milliseconds: 500),
+    Duration? liftDuration,
+    Duration? settleDuration,
+    bool? spawnIsolate,
+    this.reverse = false,
+    this.scrollDirection = Axis.vertical,
+    this.controller,
+    this.primary,
+    this.physics,
+    this.shrinkWrap = false,
+    this.padding,
+    this.reorderDuration = const Duration(milliseconds: 300),
+    this.onReorderStarted,
+    required this.onReorderFinished,
+    this.header,
+    this.footer,
+  })  : liftDuration = liftDuration ?? reorderDuration,
+        settleDuration = settleDuration ?? liftDuration ?? reorderDuration,
+        assert(
+          reorderDuration <= const Duration(milliseconds: 1500),
+          'The drag duration should not be longer than 1500 milliseconds.',
+        ),
+        super(
+          key: key,
+          items: items,
+          itemBuilder: itemBuilder,
+          delegateBuilder: (builder, itemCount) =>
+              SliverChildSeparatedBuilderDelegate(
+            itemBuilder: builder,
+            separatorBuilder: separatorBuilder,
+            itemCount: itemCount,
+          ),
           areItemsTheSame: areItemsTheSame,
           removeItemBuilder: removeItemBuilder,
           updateItemBuilder: updateItemBuilder,
@@ -329,7 +394,7 @@ class ImplicitlyAnimatedReorderableListState<E extends Object>
     if (dragKey == null || dragItem == null) return;
 
     // Allow the dragged item to be overscrolled to allow for
-    // continous scrolling while in drag.
+    // continuous scrolling while in drag.
     final overscrollBound =
         _canScroll && !(hasHeader || hasFooter) ? _dragSize : 0;
     // Constrain the dragged item to the bounds of the list.
@@ -718,7 +783,7 @@ class ImplicitlyAnimatedReorderableListState<E extends Object>
                 final size = dragItem?.size;
 
                 // Determine if the dragged widget should be hidden
-                // immidiately, or with on frame delay in order to
+                // immediately, or with on frame delay in order to
                 // avoid item flash.
                 final mustRebuild = _dragWidget == null;
 
