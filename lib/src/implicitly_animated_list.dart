@@ -124,6 +124,11 @@ class ImplicitlyAnimatedList<E extends Object> extends StatelessWidget {
   /// The amount of space by which to inset the children.
   final EdgeInsetsGeometry? padding;
 
+  /// The clip behavior to be used by the scroll view.
+  ///
+  /// Defaults to [Clip.hardEdge].
+  final Clip clipBehavior;
+
   /// Creates a Flutter ListView that implicitly animates between the changes
   /// of two lists.
   const ImplicitlyAnimatedList({
@@ -145,6 +150,7 @@ class ImplicitlyAnimatedList<E extends Object> extends StatelessWidget {
     this.physics,
     this.shrinkWrap = false,
     this.padding,
+    this.clipBehavior = Clip.hardEdge,
   }) : super(key: key);
 
   @override
@@ -158,6 +164,7 @@ class ImplicitlyAnimatedList<E extends Object> extends StatelessWidget {
       primary: primary,
       physics: physics,
       shrinkWrap: shrinkWrap,
+      clipBehavior: clipBehavior,
       slivers: <Widget>[
         SliverPadding(
           padding: padding ?? const EdgeInsets.all(0),

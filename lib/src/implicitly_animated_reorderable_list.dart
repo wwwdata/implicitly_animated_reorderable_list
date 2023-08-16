@@ -77,6 +77,11 @@ class ImplicitlyAnimatedReorderableList<E extends Object>
   /// The amount of space by which to inset the children.
   final EdgeInsetsGeometry? padding;
 
+  /// The clip behavior to be used by the scroll view.
+  ///
+  /// Defaults to [Clip.hardEdge].
+  final Clip clipBehavior;
+
   /// The duration of the animation when an item is being translated
   /// to a new position in the list, i.e. when the item is reordered.
   final Duration reorderDuration;
@@ -168,6 +173,7 @@ class ImplicitlyAnimatedReorderableList<E extends Object>
     this.physics,
     this.shrinkWrap = false,
     this.padding,
+    this.clipBehavior = Clip.hardEdge,
     this.reorderDuration = const Duration(milliseconds: 300),
     this.onReorderStarted,
     required this.onReorderFinished,
@@ -239,6 +245,7 @@ class ImplicitlyAnimatedReorderableList<E extends Object>
     this.physics,
     this.shrinkWrap = false,
     this.padding,
+    this.clipBehavior = Clip.hardEdge,
     this.reorderDuration = const Duration(milliseconds: 300),
     this.onReorderStarted,
     required this.onReorderFinished,
@@ -741,6 +748,7 @@ class ImplicitlyAnimatedReorderableListState<E extends Object>
       primary: widget.primary,
       reverse: widget.reverse,
       shrinkWrap: widget.shrinkWrap,
+      clipBehavior: widget.clipBehavior,
       slivers: <Widget>[
         if (hasHeader)
           SliverToBoxAdapter(
