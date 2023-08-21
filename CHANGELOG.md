@@ -1,3 +1,7 @@
+## 0.5.2
+
+- Add `clipBehavior` argument
+
 ## 0.5.1
 
 - Add support for separator builder. You can now use `SliverImplicitlyAnimatedList.separated` or `ImplicitlyAnimatedReorderableList.separated`.
